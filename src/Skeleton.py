@@ -22,6 +22,19 @@ def get_position(char):
         return -1
 
 
+def split_array(array, size):
+    new_array = []
+    temporal_array = []
+    for value in array:
+        temporal_array.append(value)
+        if len(temporal_array) >= size:
+            new_array.append(temporal_array)
+            temporal_array = []
+    if len(temporal_array)> 0:
+        new_array.append(temporal_array)
+    return new_array
+
+
 # ----------------------------------------------------------------------------
 
 
@@ -57,17 +70,15 @@ def uoc_hill_cipher(message, key):
         value = get_position(char)
         message_values.append(value)
 
-    split = int(len(message_values) / len(key))
-    if len(message_values) % len(key) != 0:
-        split = split+1
-    splited_array = np.array_split(message_values, split)
+    splited_array = split_array(message_values, len(key))
 
     for group in splited_array:
+
         if len(group) < len(key):
-            adapted_array=np.append(group, 0)
-            new_values = np.dot(adapted_array, key) % len(VALID_CHARACTERS)
-        else:
-            new_values = np.dot(group, key) % len(VALID_CHARACTERS)
+            while len(group) < len(key):
+                group=np.append(group, get_position('X'))
+
+        new_values = np.dot(key, group) % len(VALID_CHARACTERS)
 
         for value in new_values:
             ciphertext = ciphertext + VALID_CHARACTERS[value]
@@ -96,9 +107,9 @@ def uoc_hill_decipher(message, key):
 
 
 if __name__ == '__main__':
-    # my own examples
-    key = [[33, 1, 7], [40, 32, 24], [12, 22, 19]]
-    plaintext = "SECRET TEXT"
-    ciphertext = ":9OB8:OI5,4Y"
+    key = [[5, 15, 18, 15, 10], [22, 10, 35, 10, 37], [28, 33, 31, 7, 30], [14, 35, 33, 38, 28], [30, 0, 37, 26, 6]]
+    plaintext = "ONE, TWO OR THREE?"
+    ciphertext = "VJ03HX,OH?5G7OVE6IID"
     result = uoc_hill_cipher(plaintext, key)
-    print('resultado: ', result)
+    print('Esperado: ', ciphertext)
+    print('Resultado: ', result)
