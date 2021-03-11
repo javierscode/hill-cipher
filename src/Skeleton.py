@@ -2,19 +2,13 @@
 # -*- coding: utf-8 -*-
 
 
-
 # --- IMPLEMENTATION GOES HERE -----------------------------------------------
 #  Student helpers (functions, constants, etc.) can be defined here, if needed
 
 import random
 
-
-
-
 # ----------------------------------------------------------------------------
-
-
-
+import numpy as np
 
 
 def uoc_hill_genkey(size):
@@ -24,18 +18,11 @@ def uoc_hill_genkey(size):
     :return: size x size matrix containing the key
     """
 
-    matrix = []
-
     # --- IMPLEMENTATION GOES HERE ---
-    i=0
-    while i < size:
-        randomlist = random.sample(range(0, 100), size)
-        matrix.append(randomlist)
-        i += 1
+    matrix = np.random.randint(41, size=(size, size))
     # --------------------------------
 
     return matrix
-
 
 
 def uoc_hill_cipher(message, key):
@@ -50,8 +37,6 @@ def uoc_hill_cipher(message, key):
     ciphertext = ""
 
     #### IMPLEMENTATION GOES HERE ####
-
-
 
     # --------------------------------
 
@@ -71,23 +56,12 @@ def uoc_hill_decipher(message, key):
 
     #### IMPLEMENTATION GOES HERE ####
 
-
-
-
     # --------------------------------
 
     return plaintext
 
 
-
 if __name__ == '__main__':
-
     # my own examples
-    matrix= uoc_hill_genkey(2)
+    matrix = uoc_hill_genkey(2)
     print(matrix)
-
-
-
-
-
-
