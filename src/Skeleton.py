@@ -4,11 +4,25 @@
 
 # --- IMPLEMENTATION GOES HERE -----------------------------------------------
 #  Student helpers (functions, constants, etc.) can be defined here, if needed
+import numpy as np
 
-import random
+VALID_CHARACTERS = np.array(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+                             'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+                             '.', ',', ':', '?', ' '])
+
+
+def get_position(char):
+    # Uppercase the char
+    char = char.upper()
+    # get the position in the array
+    position = np.where(VALID_CHARACTERS == char)[0]
+    if len(position) > 0:
+        return position[0]
+    else:
+        return -1
+
 
 # ----------------------------------------------------------------------------
-import numpy as np
 
 
 def uoc_hill_genkey(size):
@@ -19,7 +33,7 @@ def uoc_hill_genkey(size):
     """
 
     # --- IMPLEMENTATION GOES HERE ---
-    matrix = np.random.randint(41, size=(size, size))
+    matrix = np.random.randint(len(VALID_CHARACTERS), size=(size, size))
     # --------------------------------
 
     return matrix
@@ -65,3 +79,5 @@ if __name__ == '__main__':
     # my own examples
     matrix = uoc_hill_genkey(2)
     print(matrix)
+    print(len(VALID_CHARACTERS))
+    print(get_position('_'))
