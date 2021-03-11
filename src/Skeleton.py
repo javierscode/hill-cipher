@@ -50,7 +50,27 @@ def uoc_hill_cipher(message, key):
 
     ciphertext = ""
 
-    #### IMPLEMENTATION GOES HERE ####
+    # --- IMPLEMENTATION GOES HERE ---
+
+    message_values = []
+    for char in message:
+        value = get_position(char)
+        message_values.append(value)
+
+    split = int(len(message_values) / len(key))
+    if len(message_values) % len(key) != 0:
+        split = split+1
+    splited_array = np.array_split(message_values, split)
+
+    for group in splited_array:
+        if len(group) < len(key):
+            adapted_array=np.append(group, 0)
+            new_values = np.dot(adapted_array, key) % len(VALID_CHARACTERS)
+        else:
+            new_values = np.dot(group, key) % len(VALID_CHARACTERS)
+
+        for value in new_values:
+            ciphertext = ciphertext + VALID_CHARACTERS[value]
 
     # --------------------------------
 
@@ -68,7 +88,7 @@ def uoc_hill_decipher(message, key):
 
     plaintext = ""
 
-    #### IMPLEMENTATION GOES HERE ####
+    # --- IMPLEMENTATION GOES HERE ---
 
     # --------------------------------
 
@@ -77,7 +97,8 @@ def uoc_hill_decipher(message, key):
 
 if __name__ == '__main__':
     # my own examples
-    matrix = uoc_hill_genkey(2)
-    print(matrix)
-    print(len(VALID_CHARACTERS))
-    print(get_position('_'))
+    key = [[33, 1, 7], [40, 32, 24], [12, 22, 19]]
+    plaintext = "SECRET TEXT"
+    ciphertext = ":9OB8:OI5,4Y"
+    result = uoc_hill_cipher(plaintext, key)
+    print('resultado: ', result)
