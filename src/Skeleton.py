@@ -5,10 +5,13 @@
 # --- IMPLEMENTATION GOES HERE -----------------------------------------------
 #  Student helpers (functions, constants, etc.) can be defined here, if needed
 import numpy as np
+import sympy as sympy
 
 VALID_CHARACTERS = np.array(['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
                              'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
                              '.', ',', ':', '?', ' '])
+
+PADDING = 'X'
 
 
 def get_position(char):
@@ -34,6 +37,11 @@ def split_array(array, size):
         new_array.append(temporal_array)
     return new_array
 
+
+def get_inverse_key(key):
+    matrix = sympy.Matrix(key)
+    inv_matrix = matrix.inv_mod(len(VALID_CHARACTERS))
+    return np.array(inv_matrix).astype(np.int64)
 
 # ----------------------------------------------------------------------------
 
@@ -76,7 +84,7 @@ def uoc_hill_cipher(message, key):
 
         if len(group) < len(key):
             while len(group) < len(key):
-                group=np.append(group, get_position('X'))
+                group=np.append(group, get_position(PADDING))
 
         new_values = np.dot(key, group) % len(VALID_CHARACTERS)
 
@@ -100,16 +108,27 @@ def uoc_hill_decipher(message, key):
     plaintext = ""
 
     # --- IMPLEMENTATION GOES HERE ---
+    invers_key = get_inverse_key(key)
 
+    message_values = []
+    for char in message:
+        value = get_position(char)
+        message_values.append(value)
+
+    splited_array = split_array(message_values, len(invers_key))
+
+    for group in splited_array:
+
+        if len(group) < len(invers_key):
+            while len(group) < len(invers_key):
+                group=np.append(group, get_position(PADDING))
+
+        new_values = np.dot(invers_key, group) % len(VALID_CHARACTERS)
+        for value in new_values:
+            plaintext = plaintext + VALID_CHARACTERS[int(value)]
+
+    while plaintext[len(plaintext)-1] == PADDING:
+        plaintext= plaintext[0:len(plaintext)-1]
     # --------------------------------
 
     return plaintext
-
-
-if __name__ == '__main__':
-    key = [[5, 15, 18, 15, 10], [22, 10, 35, 10, 37], [28, 33, 31, 7, 30], [14, 35, 33, 38, 28], [30, 0, 37, 26, 6]]
-    plaintext = "ONE, TWO OR THREE?"
-    ciphertext = "VJ03HX,OH?5G7OVE6IID"
-    result = uoc_hill_cipher(plaintext, key)
-    print('Esperado: ', ciphertext)
-    print('Resultado: ', result)

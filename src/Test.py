@@ -135,8 +135,7 @@ class Test_1_3_Decipher(unittest.TestCase):
 if __name__ == '__main__':
 
     # create a suite with all tests
-    #test_classes_to_run = [Test_1_1_KeyGen, Test_1_2_Cipher, Test_1_3_Decipher]
-    test_classes_to_run = [Test_1_1_KeyGen,Test_1_2_Cipher]
+    test_classes_to_run = [Test_1_1_KeyGen, Test_1_2_Cipher, Test_1_3_Decipher]
     loader = unittest.TestLoader()
     suites_list = []
     for test_class in test_classes_to_run:
