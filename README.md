@@ -97,10 +97,6 @@ def uoc_hill_decipher(message, key):
 
     for group in splited_array:
 
-        if len(group) < len(invers_key):
-            while len(group) < len(invers_key):
-                group=np.append(group, get_position(PADDING))
-
         new_values = np.dot(invers_key, group) % len(VALID_CHARACTERS)
         for value in new_values:
             plaintext = plaintext + VALID_CHARACTERS[int(value)]
