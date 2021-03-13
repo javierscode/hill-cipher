@@ -15,9 +15,7 @@ PADDING = 'X'
 
 
 def get_position(char):
-    # Uppercase the char
     char = char.upper()
-    # get the position in the array
     position = np.where(VALID_CHARACTERS == char)[0]
     if len(position) > 0:
         return position[0]

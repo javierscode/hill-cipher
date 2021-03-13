@@ -4,7 +4,7 @@
 import unittest
 import numpy as np
 
-from Skeleton import *
+from Main import *
 
 
 
